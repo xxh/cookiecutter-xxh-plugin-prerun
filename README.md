@@ -19,3 +19,10 @@ tree xxh-plugin-prerun-zoxide
 # ├── README.md
 # └── requirements.txt
 ```
+
+# Integration with xxh-shells
+
+To integrate the plugin with xxh-shell create `pluginrc` file. For example create `pluginrc.zsh` with the content to init the zoxide:
+```shell
+eval "$(zoxide init zsh)"
+```
