@@ -50,6 +50,13 @@ build() {
   curl -s https://api.github.com/repos/ajeetdsouza/zoxide/releases/latest | grep "browser_download_url" | cut -d '"' -f 4 | grep "$_target" | xargs -n 1 curl -LJO
   mv "zoxide-$_target" "zoxide"
   chmod +x zoxide
+  
+  # Note! To integrate the plugin with xxh-shell create `pluginrc` file. 
+  # For example create `pluginrc.zsh` with the content to init the zoxide on shell starting:
+  # ```
+  # eval "$(zoxide init zsh)"
+  # ```  
+  
   # </Example>
   #############
 }
