@@ -1,50 +1,69 @@
 #!/usr/bin/env bash
 
-CDIR="$(cd "$(dirname "$0")" && pwd)"
-build_dir=$CDIR/build
+main() {
+  #############
+  # <Example>
+	need_cmd curl
+	need_cmd grep
+	need_cmd cut
+	need_cmd xargs
+	need_cmd chmod
+  # </Example>
+  #############
+	build
+}
 
-while getopts A:K:q option
-do
-  case "${option}"
-  in
-    q) QUIET=1;;
-    A) ARCH=${OPTARG};;
-    K) KERNEL=${OPTARG};;
-  esac
-done
+build() {
 
-rm -rf $build_dir
-mkdir -p $build_dir
+  CDIR="$(cd "$(dirname "$0")" && pwd)"
+  build_dir=$CDIR/build
 
-for f in *prerun.sh
-do
-    cp $CDIR/$f $build_dir/
-done
+  while getopts A:K:q option
+  do
+    case "${option}"
+    in
+      q) QUIET=1;;
+      A) ARCH=${OPTARG};;
+      K) KERNEL=${OPTARG};;
+    esac
+  done
 
-cd $build_dir
+  rm -rf $build_dir
+  mkdir -p $build_dir
 
-######################################################################################################
-# Example: 
+  for f in *prerun.sh
+  do
+      cp $CDIR/$f $build_dir/
+  done
 
-#url="https://github.com/xxh/xxh/releases/download/0.8.7/xxh-portable-musl-alpine-Linux-x86_64.tar.gz"
-#tarname=`basename $url`
+  cd $build_dir
 
-#[ $QUIET ] && arg_q='-q' || arg_q=''
-#[ $QUIET ] && arg_s='-s' || arg_s=''
-#[ $QUIET ] && arg_progress='' || arg_progress='--show-progress'
+  #############
+  # <Example>
+  # The logic is from https://github.com/ajeetdsouza/zoxide/blob/06062e92ca591a3758f2d69c9b1cd772a6a378b0/install.sh
+  echo "Downloading zoxide..."
+  _cputype="x86_64"
+  _clibtype="musl"
+  _ostype=unknown-linux-$_clibtype
+  _target="$_cputype-$_ostype"
+  rm -rf "zoxide-$_target"
+  curl -s https://api.github.com/repos/ajeetdsouza/zoxide/releases/latest | grep "browser_download_url" | cut -d '"' -f 4 | grep "$_target" | xargs -n 1 curl -LJO
+  mv "zoxide-$_target" "zoxide"
+  chmod +x zoxide
+  # </Example>
+  #############
+}
 
-#if [ -x "$(command -v wget)" ]; then
-#  wget $arg_q $arg_progress $url -O $tarname
-#elif [ -x "$(command -v curl)" ]; then
-#  curl $arg_s -L $url -o $tarname
-#else
-#  echo Install wget or curl
-#fi
+cmd_chk() {
+  >&2 echo Check "$1"
+	command -v "$1" >/dev/null 2>&1
+}
 
-#tar -xzf $tarname
-#rm $tarname
-#mkdir bin
-#mv xxh bin/
+need_cmd() {
+  if ! cmd_chk "$1"; then
+    error "need $1 (command not found)"
+    exit 1
+  fi
+}
 
-#cp $CDIR/xxh ./
-######################################################################################################
+main "$@" || exit 1
