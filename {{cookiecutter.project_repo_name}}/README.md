@@ -7,12 +7,12 @@ If you like the idea click ⭐ on the repo and <a href="https://twitter.com/inte
 </p>
 
 ## Install
-```
+```shell
 xxh +I https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_repo_name}}
 ```
 
 ## Usage
-```
+```shell
 xxh host
 # ...
 ```
