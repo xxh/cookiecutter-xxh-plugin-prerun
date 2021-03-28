@@ -1,0 +1,7 @@
+{
+    "github_username": "username",
+    "project_name": "my-tool",
+    "project_repo_name": "{{'xxh-plugin-prerun-' + cookiecutter.project_name.lower().replace(' ', '-').replace('_','-')}}",
+    "project_short_description": "The my-tool for xxh.",
+    "_extensions": ["jinja2_time.TimeExtension"]
+}
