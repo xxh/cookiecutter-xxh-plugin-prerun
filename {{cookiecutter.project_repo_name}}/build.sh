@@ -31,10 +31,8 @@ build() {
   rm -rf $build_dir
   mkdir -p $build_dir
 
-  for f in *prerun.sh *pluginrc.*
-  do
-      cp $CDIR/$f $build_dir/
-  done
+  cd $CDIR
+  cp *prerun.sh *pluginrc.* $build_dir/
 
   cd $build_dir
 
